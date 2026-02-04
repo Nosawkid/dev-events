@@ -1,9 +1,23 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import posthog from "posthog-js";
 
 const EventCard = ({ title, image, slug, location, date, time }) => {
+  const handleClick = () => {
+    // Capture event card click - key engagement metric
+    posthog.capture("event_card_clicked", {
+      event_title: title,
+      event_slug: slug,
+      event_location: location,
+      event_date: date,
+      event_time: time,
+    });
+  };
+
   return (
-    <Link href={`/events/${slug}`} id="event-card">
+    <Link href={`/events/${slug}`} id="event-card" onClick={handleClick}>
       <Image
         src={image}
         alt={title}
